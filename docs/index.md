@@ -20,7 +20,7 @@ for the components on a scene. And in the runtime Unity Engine
 will set the correct references to the new created components before the "Awake()" call.
 
 
-![direct example](direct.png)
+![direct example](https://media.githubusercontent.com/media/dgolovin-dev/article-unity3d-di/main/docs/direct.png)
 *Check out the full example of this approach in the directory `Assets/direct`.*
 
 There are a lot of problems with this approach. For example:
