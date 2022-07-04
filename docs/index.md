@@ -157,7 +157,7 @@ prefabs and work on the project in parallel manner.
 You artefacts will be more stable with this approach 
 than with direct binding.
 
-# Dependency Injection
+## Dependency Injection
 
 When you project is becoming bigger,
 it makes harder to track the initialization order.
