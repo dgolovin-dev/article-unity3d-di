@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4559310701724245613
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4559310701724245612}
+  - component: {fileID: -2926498952477993725}
+  m_Layer: 0
+  m_Name: asteroids
+  m_TagString: asteroidManager
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4559310701724245612
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4559310701724245613}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-2926498952477993725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4559310701724245613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b00a5034f0040169c09220e392b0e52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  asteroidPrefabs:
+  - {fileID: 5692028987607473514, guid: d562a5ef2a764459995d10bfdd382064, type: 3}
+  - {fileID: 8352349787628661998, guid: 0ccd8bc02b76b4814848917e57897a93, type: 3}
+  - {fileID: 3715452552678497777, guid: 8153508b281c048a8a3996c2aaddb917, type: 3}
+  - {fileID: 1970178358534318049, guid: e99a8f03f78f94e6d8b0e6dc9f2f7bff, type: 3}
+  - {fileID: -6222357335852075792, guid: 1444db95e462a47f3a451038e0b9aaa7, type: 3}
+  - {fileID: -2318577165751977047, guid: 461b33d3df43d4a2281da78be6ecc713, type: 3}
+  - {fileID: 4060630153763917529, guid: 0b94c394e610944f7b839a4731350829, type: 3}
+  - {fileID: -8372090596122252534, guid: 1757abbb2e7e3454f90e4b749739c1c0, type: 3}
+  - {fileID: -3067607939668829964, guid: 58d04c26e0ebb40eea4334a509eb52ba, type: 3}
+  - {fileID: 2859197302366014092, guid: 58e280520dbf145278dc019211ee3ed6, type: 3}
+  - {fileID: 8499857386194387264, guid: 811d227f92f754cbba4e2e52ff64fec5, type: 3}
+  - {fileID: 2863498835254024042, guid: 4ddda73ee53da476ab631e7f76136d85, type: 3}
+  - {fileID: 7597261643307363986, guid: 67d752879b0264164871edfb2855fa2c, type: 3}
+  asteroids: []
+  onAllDead:
+    m_PersistentCalls:
+      m_Calls: []
