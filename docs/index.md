@@ -68,6 +68,7 @@ its internal registry and allow you to find(locate) them using these methods.
 Let's see some code snippets:
 
 1. Game objects instantiation in `ObjectFactory.Awake`:
+
 ```C#
   public class ObjectFactory: MonoBehaviour {
     [SerializeField]
@@ -82,7 +83,9 @@ Let's see some code snippets:
   }
 }
 ```
+
 2. Search and binding in `AsteroidManager`:
+
 ```C#
   public class AsteroidManager : MonoBehaviour {
     [SerializeField][NotEditable]
@@ -101,7 +104,9 @@ Let's see some code snippets:
     ...
   }
 ```
+
 3. Search and binding in GameManager.
+
 ```C#
   public class GameManager: MonoBehaviour { 
     [SerializeField][NotEditable]
@@ -161,6 +166,7 @@ For example, you call a method-locator,
 but the target object is not instantiated yet.
 
 Of course, you can write a coroutine like that:
+
 ```C#
 private IEnumerator Start() {
   while(starship == null) {
@@ -182,6 +188,7 @@ that it will need some other objects and, in runtime,
 external system will provide these objects 
 and notify you about it. 
 It is hard to understand abstractly, so let's see the next code snippet:
+
 ```c#
   public class GameManager: SceneContextMonoBehaviour {
     ...
@@ -200,6 +207,7 @@ It is hard to understand abstractly, so let's see the next code snippet:
     ...
   }
 ```
+
 *The full example you can find here `Assets/context`.*
 
 I declare dependencies using the attribute `[Inject]`, `[SerializeField][NotEditable]`.
@@ -212,6 +220,7 @@ Pay attention to the superclass `SceneContextMonoBehaviour`.
 It 'says' to the context to inject the dependencies
 and add this object to context 
 for injecting dependencies of other objects.
+
 ```C# 
   void Awake() {
     var context = SceneContextHolder.GetContext(gameObject.scene);
