@@ -1,73 +1,71 @@
 # Object Binding in Unity3d (Service locator, dependency injection)
 
 Hello. Today we are talking about *object binding* in Unity.
-I am going to show some efficient ways on how to split your app parts and efficiently deal with the dependencies among these parts.
+I am going to show some efficient ways on how to split your app into parts and efficiently deal with dependencies among these parts.
 
 I will show how to use these patterns:
 - Service Locator
 - Dependency Injection
 
 As an example, I will use the code of an asteroid-like game.
-So, I advice you to clone the git repo and check the full examples out. 
+So, I advice you to clone the [git repo](https://github.com/dgolovin-dev/article-unity3d-di) and check the full examples out. 
 
 
 ## Direct binding
 
-When you start developing project in Unity, 
+When you start developing a project in Unity, 
 you start with *direct binding* of components.
-You just set the references in the fields in the Inspector View 
-for the components on a scene. And in the runtime Unity Engine 
-will set the correct references to the new created components before the "Awake()" call.
+You just set references in the fields in the Inspector View 
+for the components on the scene. And in runtime Unity Engine 
+will set correct references to new created components before "Awake()" call.
 
 
 ![direct example](https://media.githubusercontent.com/media/dgolovin-dev/article-unity3d-di/main/docs/direct.png)
-*Check out the full example of this approach in the directory `Assets/direct`.*
+*Check out the full example of this approach in the directory `Assets/direct`. [git repo](https://github.com/dgolovin-dev/article-unity3d-di)*
 
 There are a lot of problems with this approach. For example:
-1. You should create and store all the game objects and components in the same
+1. You should create and store all your game objects and components in the same
 scene. It will be a huge scene. It is easy to break this scene and it is impossible
-to modify in a parallel manner when you are in a team. 
+to modify in parallel manner when you are in a team. 
 In the most cases it is impossible to solve conflicts when you use VCS (git, svn, etc).
 2. It is hard to track and maintain so many references. 
-3. Sometimes, it makes harder to distribute responsibility between components. 
+3. Sometimes, it makes harder to distribute responsibilies among components. 
 Subconsciously, you will tend to reduce the count of references and create big god-objects.
 4. It creates configuration "duplicates" on the scene when you need several 
 identical objects.
 
-Overall, you project start looking like a bunch of tangled wires.
+Overall, you project starts looking like a bunch of tangled wires.
 It will be hard to modify something and don't break it. 
 
 ![wires](https://www.staticelectrics.com.au/wp-content/uploads/2021/02/faulty-wiring.jpg)
 
-If you create a **prefab** for every internally highly connected game object, you will move many links from the scene to the prefabs. It will become easier to maintain and it will unlock a parallel work.
-But this is not enough. If you keep references among prefabs in a scene, you still have a problem with concurrent modification.
+If you create a **prefab** for every internally highly connected game object, you will move many references from the scene to the prefabs. It will become easier to maintain and it will unlock parallel work.
+But this is not enough. If you keep  references among the prefabs in the scene, you still have a problem with concurrent modification.
 You scene will be an unstable point and it will break very often.
-It better to remove even these links from your scene.
+It is better to remove even these links from the scene.
 
 
 ## Service Locator
 
-Best practice: create middle/small prefabs and keep minimum of references 
-among prefabs in your scenes.
+Best practice: create middle/small prefabs and keep the minimum number of references 
+among the prefabs in the scene.
 
-You can instantiate game objects from prefabs in the code.
-Then you can link these new objects in the code too
-or use a pattern Service Locator 
-and let your components to resolve their external references. 
-The second approach is better because it decrease coupling 
-and increase maintainability.
+You can instantiate game objects from the prefabs in the code.
+Then you can link these new objects in the code using the pattern builder
+or use a pattern Service Locator and let your components resolve their external references. 
+The second approach is better because it decreases coupling and increases maintainability.
 
-The standard Service Locator in Unity is available through methods 
+The standard Service Locator in Unity is available through the methods 
 `GameObject.Find*` и `Component.GetComponent*`. 
 Unity places every instantiated component and game object in 
 its internal registry and allow you to find(locate) them using these methods. 
 
 
-*Check out the full example of this approach in the directory `Assets/locator`.*
+*Check out the full example of this approach in the directory `Assets/locator`. [git repo](https://github.com/dgolovin-dev/article-unity3d-di)*
 
 Let's see some code snippets:
 
-1. Game objects instantiation in `ObjectFactory.Awake`:
+1. Game objects instantiation from the prefabs in the `ObjectFactory.Awake`:
 
 ```C#
   public class ObjectFactory: MonoBehaviour {
@@ -84,7 +82,7 @@ Let's see some code snippets:
 }
 ```
 
-2. Search and binding in `AsteroidManager`:
+2. Locating and binding in the `AsteroidManager`:
 
 ```C#
   public class AsteroidManager : MonoBehaviour {
@@ -105,7 +103,7 @@ Let's see some code snippets:
   }
 ```
 
-3. Search and binding in GameManager.
+3. Locating and binding in the `GameManager`.
 
 ```C#
   public class GameManager: MonoBehaviour { 
@@ -131,35 +129,32 @@ The scene almost empty. It is good for teamwork
 
 - I use `GameObject.FindGameObjectWithTag(...).GetComponent<...>()` 
 instead of `GameObject.FindObjectOfType.` It works much faster.
-Also, I recommend to avoid using
-`GetComponentsInChildren`. `FindObjectOfType` and `GetComponentsInChildren` 
-go through full hierarchy of game objects and call `GetComponent` on every game object
+Also, I recommend to avoid using `GetComponentsInChildren`. `FindObjectOfType` and `GetComponentsInChildren` 
+go through the full hierarchy and call `GetComponent` on every game object
   (This is very slow.).
 
-- It makes sense to call methods-locators(`Find*`,`GetComponent*`)
-as rare as possible. Ideally, only once in 
-`Awake` or `Start`. 
-If you place such calls in `Update`, it will kill performance of your game.
+- It makes sense to call the methods-locators(`Find*`,`GetComponent*`)
+as rare as possible. Ideally, only once in the `Awake` or `Start`. 
+If you place such calls in the `Update`, it will kill the performance of your game.
 
 - Pay attention to the order of the game objects creation
 and their initialization (1 -> 2 -> 3).
-Because of the initialization order, binding
-in `Start` methods (next frame after creation).
+Because of this initialization order, locating and binding is
+in the `Start` methods (the next frame after the instantiation).
 And that is why `ObjectFactory` is the last in 
-the creation list. It must be initialized after the
-other objects.
+the creation list. It must be initialized last (it needs the other objects for that).
 
 
 These points make the code a bit more complex, 
-and make you to think about initialization order.
+and make you think about the initialization order.
 But it allows you to split your scene into independent
-prefabs and work on the project in parallel manner.
-You artefacts will be more stable with this approach 
-than with direct binding.
+prefabs and work comfortably on the project in a parallel manner.
+You artifacts will be more stable with this approach 
+than with the direct binding.
 
 ## Dependency Injection
 
-When you project is becoming bigger,
+When your project is becoming bigger,
 it makes harder to track the initialization order.
 
 For example, you call a method-locator, 
@@ -179,14 +174,14 @@ private IEnumerator Start() {
 ```
 
 It will work, but your code will 
-become very dirty after some time and it will be
-hard to fix bugs.
+become dirty after some time and it will be
+hard to modify and fix bugs.
 
-The good solution in this case is using `Dependency Injection`. 
+The good solution, in this case, is to use the `Dependency Injection`. 
 When you write a class you just declare, 
-that it will need some other objects and, in runtime,
-external system will provide these objects 
-and notify you about it. 
+that it needs some other objects and, in runtime,
+the external system will provide these objects 
+and notify about it. 
 It is hard to understand abstractly, so let's see the next code snippet:
 
 ```c#
@@ -208,17 +203,18 @@ It is hard to understand abstractly, so let's see the next code snippet:
   }
 ```
 
-*The full example you can find here `Assets/context`.*
+*The full example you can find here `Assets/context` [git repo](https://github.com/dgolovin-dev/article-unity3d-di).*
 
-I declare dependencies using the attribute `[Inject]`, `[SerializeField][NotEditable]`.
+I declare dependencies using the attribute `[Inject]`
+(`[SerializeField][NotEditable]` are optional, they helps to track dependencies in the Inspector).
 The *context* reads these attributes in the runtime and binds objects.
 
-When the *context* resolves all dependencies, 
-it calls a callback with the attribute `[AfterInject]`.
+When the *context* resolves all the dependencies, 
+it calls the callback with the attribute `[AfterInject]`.
 
 Pay attention to the superclass `SceneContextMonoBehaviour`.
 It 'says' to the context to inject the dependencies
-and add this object to context 
+and add this object to the context 
 for injecting dependencies of other objects.
 
 ```C# 
@@ -238,24 +234,24 @@ It consists of:
 you add the component to the registry and it becomes
 available for the dependency injection.
 - The locator. It allows to find objects in registry
-by some features (in this example - class).
+by some features (in this example - by class).
 - The dependency injector. `context.Inject`
 finds all fields with the attribute `[Inject]`,
-and inject all the necessary dependencies 
-in the fields. It will wait if the target 
+and inject the necessary dependencies 
+in these fields. It will wait if the target 
 dependency is not available yet.
 When it finishes, it will call a callback 
 with the attribute `[AfterInject]`.
 
 The *context* may live all alone,
-but, often, it is better to bind to other parts 
+but, often, it is better to bind it to other parts 
 of your system. 
 In this example, the context is bound to the scene.
 I highly recommend to see the implementation of `Context`
 and use this approach in your projects.
 
 This implementation is very small and rough
-with a purpose to show you the main concepts of DI.
+with the purpose to show you the main concepts of DI.
 You can look at on the VContainer and ZInject as the
 other mature implementations of this approach.
 
