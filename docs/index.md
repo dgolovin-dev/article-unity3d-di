@@ -263,4 +263,5 @@ other mature implementations of this approach.
 
 <script src='/assets/comments.js'></script>
 <meta name="author" content="Dmitry Golovin"/>
+<meta name="image" property="og:image" content="">
 
