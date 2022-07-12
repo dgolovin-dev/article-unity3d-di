@@ -264,7 +264,7 @@ other mature implementations of this approach.
 <script src='/assets/comments.js'></script>
 
 <meta property='og:title' content='Object Binding in Unity3d (Service locator, dependency injection)'/>
-<meta property='og:image' content='https://unity3d.com/profiles/unity3d/themes/unity/images/pages/branding_trademarks/unity-mwu-black.png'/>
+<!--meta property='og:image' content='https://unity3d.com/profiles/unity3d/themes/unity/images/pages/branding_trademarks/unity-mwu-black.png'/-->
 <meta property="og:image:width" content="400" /> 
 <meta property="og:image:height" content="94" />
 <meta property='og:description' content='This is a short article about how to split your game into pieces in Unity3d. I will briefly show you the approaches with the service locator and the dependency injection. There is an example game to compare these approaches.'/>
