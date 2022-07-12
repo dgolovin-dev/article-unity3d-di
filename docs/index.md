@@ -262,3 +262,7 @@ other mature implementations of this approach.
 
 
 <script src='/assets/comments.js'></script>
+
+
+<meta property='og:image:width' content='199'/>
+<meta name="author" content="Dmitry Golovin">
