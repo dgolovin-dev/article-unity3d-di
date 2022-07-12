@@ -1,6 +1,6 @@
 # Object Binding in Unity3d
 
-![made with unity](made_with_unity.png)
+![made with unity](https://github.com/dgolovin-dev/article-unity3d-di/raw/main/docs/made_with_unity.png)
 
 Hello. Today we are talking about *object binding* in Unity.
 I am going to show some efficient ways on how to split your app into parts and efficiently deal with dependencies among these parts.
@@ -21,7 +21,7 @@ You just set references in the fields in the Inspector View
 for the components on the scene. And in runtime Unity Engine 
 will set correct references to new created components before "Awake()" call.
 
-<img src='./direct.png' width='400'/>
+<img src='https://github.com/dgolovin-dev/article-unity3d-di/raw/main/docs/direct.png' width='400'/>
 
 *Check out the full example of this approach in the directory `Assets/direct`. [>git repo<](https://github.com/dgolovin-dev/article-unity3d-di)*
 
@@ -264,7 +264,7 @@ other mature implementations of this approach.
 <script src='/assets/comments.js'></script>
 
 <meta property='og:title' content='Object Binding in Unity3d (Service Locator, Dependency Injection)'/>
-<meta property='og:image' content='./made_with_unity.png'/>
+<meta property='og:image' content='https://github.com/dgolovin-dev/article-unity3d-di/raw/main/docs/made_with_unity.png'/>
 <meta property='og:description' content='This is a short article about how to split your game into pieces in Unity3d. I will briefly show you the approaches with the service locator and the dependency injection. There is an example game to compare these approaches.'/>
 <meta property='og:url' content='https://dgolovin-dev.github.io/article-unity3d-di/'/>
 
