@@ -1,6 +1,6 @@
 # Object Binding in Unity3d
 
-<img src='https://unity3d.com/profiles/unity3d/themes/unity/images/pages/branding_trademarks/unity-mwu-black.png' width=400 height=94/>
+<img src='https://unity3d.com/profiles/unity3d/themes/unity/images/pages/branding_trademarks/unity-mwu-black.png' width='400'/>
 
 Hello. Today we are talking about *object binding* in Unity.
 I am going to show some efficient ways on how to split your app into parts and efficiently deal with dependencies among these parts.
@@ -21,8 +21,8 @@ You just set references in the fields in the Inspector View
 for the components on the scene. And in runtime Unity Engine 
 will set correct references to new created components before "Awake()" call.
 
+<img src='./direct.png' width='400'/>
 
-![direct example](https://media.githubusercontent.com/media/dgolovin-dev/article-unity3d-di/main/docs/direct.png)
 *Check out the full example of this approach in the directory `Assets/direct`. [git repo](https://github.com/dgolovin-dev/article-unity3d-di)*
 
 There are a lot of problems with this approach. For example:
@@ -39,7 +39,8 @@ identical objects.
 Overall, you project starts looking like a bunch of tangled wires.
 It will be hard to modify something and don't break it. 
 
-![wires](https://www.staticelectrics.com.au/wp-content/uploads/2021/02/faulty-wiring.jpg)
+<img src='https://www.staticelectrics.com.au/wp-content/uploads/2021/02/faulty-wiring.jpg' width='400'/>
+
 
 If you create a **prefab** for every internally highly connected game object, you will move many references from the scene to the prefabs. It will become easier to maintain and it will unlock parallel work.
 But this is not enough. If you keep  references among the prefabs in the scene, you still have a problem with concurrent modification.
