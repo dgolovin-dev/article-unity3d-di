@@ -1,4 +1,4 @@
-# Object Binding in Unity3d (Service locator, dependency injection)
+# Object Binding in Unity3d
 
 ![made with unity](https://unity3d.com/profiles/unity3d/themes/unity/images/pages/branding_trademarks/unity-mwu-black.png)
 
