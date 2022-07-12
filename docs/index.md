@@ -10,7 +10,7 @@ I will show how to use these patterns:
 - Dependency Injection
 
 As an example, I will use the code of an asteroid-like game.
-So, I advice you to clone the [git repo](https://github.com/dgolovin-dev/article-unity3d-di) and check the full examples out. 
+So, I advice you to clone the [>git repo<](https://github.com/dgolovin-dev/article-unity3d-di) and check the full examples out. 
 
 
 ## Direct binding
@@ -23,7 +23,7 @@ will set correct references to new created components before "Awake()" call.
 
 <img src='./direct.png' width='400'/>
 
-*Check out the full example of this approach in the directory `Assets/direct`. [git repo](https://github.com/dgolovin-dev/article-unity3d-di)*
+*Check out the full example of this approach in the directory `Assets/direct`. [>git repo<](https://github.com/dgolovin-dev/article-unity3d-di)*
 
 There are a lot of problems with this approach. For example:
 1. You should create and store all your game objects and components in the same
@@ -64,7 +64,7 @@ Unity places every instantiated component and game object in
 its internal registry and allow you to find(locate) them using these methods. 
 
 
-*Check out the full example of this approach in the directory `Assets/locator`. [git repo](https://github.com/dgolovin-dev/article-unity3d-di)*
+*Check out the full example of this approach in the directory `Assets/locator`. [>git repo<](https://github.com/dgolovin-dev/article-unity3d-di)*
 
 Let's see some code snippets:
 
@@ -206,7 +206,7 @@ It is hard to understand abstractly, so let's see the next code snippet:
   }
 ```
 
-*The full example you can find here `Assets/context` [git repo](https://github.com/dgolovin-dev/article-unity3d-di).*
+*The full example you can find here `Assets/context` [>git repo<](https://github.com/dgolovin-dev/article-unity3d-di).*
 
 I declare dependencies using the attribute `[Inject]`
 (`[SerializeField][NotEditable]` are optional, they helps to track dependencies in the Inspector).
