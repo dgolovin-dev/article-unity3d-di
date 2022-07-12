@@ -265,4 +265,8 @@ other mature implementations of this approach.
 
 
 <meta property='og:image:width' content='199'/>
-<meta name="author" content="Dmitry Golovin">
+<meta name="author" content="Dmitry Golovin"/>
+<meta property='article:published_time' content='2022-07-12'/>
+<meta property='article:tag' content='unity3d'/>
+<meta property='article:tag' content='service-locator'/>
+<meta property='article:tag' content='dependency-injection'/>
