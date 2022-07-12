@@ -1,6 +1,6 @@
 # Object Binding in Unity3d (Service Locator, Dependency Injection)
 
-![made with unity](https://unity3d.com/profiles/unity3d/themes/unity/images/pages/branding_trademarks/unity-mwu-black.png)
+<img src ="https://unity3d.com/profiles/unity3d/themes/unity/images/pages/branding_trademarks/unity-mwu-black.png" width="200"/>
 
 Hello. Today we are talking about *object binding* in Unity.
 I am going to show some efficient ways on how to split your app into parts and efficiently deal with dependencies among these parts.
