@@ -166,18 +166,15 @@ private IEnumerator Start() {
 
 *Исходный код доступен в папке `Assets/context` в  [>репозитории<](https://github.com/dgolovin-dev/article-unity3d-di).*
 
-Я объявляюб зависимости с помощью атрибута `[Inject]` 
+Я объявляю зависимости с помощью атрибута `[Inject]` 
 I declare dependencies using the attribute `[Inject]`. `[SerializeField][NotEditable]` опциональны, они помогают отслеживать зависимости в Инспекторе во время исполнения.
-(`[SerializeField][NotEditable]` are optional, they helps to track dependencies in the Inspector).
-*Контекст* (иногда его называют контейнер) считывает эти атрибуты во время исполнения и проставляет корректные ссылки на объекты в эти поля.
+*Контекст* считывает эти атрибуты во время исполнения и проставляет корректные ссылки на объекты в эти поля.
 
-When the *context* resolves all the dependencies, 
-it calls the callback with the attribute `[AfterInject]`.
+Когда the *контекст* разрешит все зависимости (проставит ссылки в поля отмеченные атрибутом Inject), 
+он вызовет каллбак метод отмеченный атрибутом `[AfterInject]`.
 
-Pay attention to the superclass `SceneContextMonoBehaviour`.
-It 'says' to the context to inject the dependencies
-and add this object to the context 
-for injecting dependencies of other objects.
+Обратите внимание на суперкласс `SceneContextMonoBehaviour`.
+Именно он 'говорит' контексту разрешить зависимости для данного объекта и добавляет текущий объект в контекст (для внедрения в другие объекты).
 
 ```C# 
   void Awake() {
@@ -187,35 +184,33 @@ for injecting dependencies of other objects.
   }
 ```
 
-Let's talk about **context**.
-Context is the dependency injection system.
-Some people prefer to name it 'container'.
-It consists of:
+Подробнее о **контексте**.
+Контекст это система внедрения зависимостей. Некоторые предпочитают называть его "контейнер".
+Он состоит из:
 
-- The registry. When you call `context.Add`, 
-you add the component to the registry and it becomes
-available for the dependency injection.
-- The locator. It allows to find objects in registry
-by some features (in this example - by class).
-- The dependency injector. `context.Inject`
-finds all fields with the attribute `[Inject]`,
-and inject the necessary dependencies 
-in these fields. It will wait if the target 
-dependency is not available yet.
-When it finishes, it will call a callback 
-with the attribute `[AfterInject]`.
+- Реестр. При вызове `context.Add` объект добавляется в этот реестр и становится доступен для внедрения в другие объекты.
+- Локатор. Он позволяет производить поиск в реестре по каким-либо признакам (в данном примере - по классу).
+- Инъектор зависимостей. `context.Inject`
+находит все поля с атрибутом `[Inject]`,
+и проставляет(внедряет) необходимые зависимости в эти поля. 
+Он будет ждать, если целевая зависимость еще не доступна. 
+Когда инъектор внедрит зависимости, он вызовет каллбак с атрибутом `[AfterInject]`.
 
-The *context* may live all alone,
-but, often, it is better to bind it to other parts 
-of your system. 
-In this example, the context is bound to the scene.
-I highly recommend to see the implementation of `Context`
-and use this approach in your projects.
+*Контекст* может существовать сам по себе, но часто его удобно жестко привязать к частям вашего приложения.
+В этом примере контекст привязан к сцене. Рекомендую посмотреть реализацию контекста(класс Context), чтобы понять как он работает в простейшем случае и использовать этот подход в ваших проектах.
 
-This implementation is very small and rough
-with the purpose to show you the main concepts of DI.
-You can look at on the VContainer and ZInject as the
-other mature implementations of this approach.
+Хотя эта реализация контекста очень маленькая и грубая (есть простор для оптимизации), но она достаточно очевидная, чтобы продемонстрировать работу Dependency Injection.
+
+Также, вы можете посмотреть на реализацию VContainer и/или ZInject. Эти проекты более взрослые, но и более сложные в освоении.
+
+В конце выберите и используйте то, что удобно и подходит именно вам. Обратите внимание на работу с циклическими зависимостями, на поведение контекста при неразрешенной зависисмости (как быстро контекст позволяет найти что пропущено?) и посмотрите на порядок инициализации. Вполне может оказаться, что своя реализация будет вам проще и ближе, чем тот же Zenject. 
+
+## Итог
+Мы рассмотрели основные способы связывания объектов в Unity. 
+
+- Прямое связывание работает хорошо, для маленьких проектов, но создает проблемы при росте проекта: проект становится "хрупким", затрудняется командная работа.
+- Service Locator подходит для среднего масштаба проектов, но при росте числа объектов с зависимостями становится сложнее обеспечивать порядок создани и инициализации объектов.
+- Dependency Injection помогает справиться с крупными проектами с большим количеством объектов, однако эта технология требует больше времени на освоение.
 
 # [[Author]](/)
 
