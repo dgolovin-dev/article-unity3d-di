@@ -104,44 +104,30 @@ Unity помещает каждый созданный объект во вну�
 
 Несколько важных замечаний:
 
-- Создание новых объектов происходит в ObjectFactory. Сцена практически пустая. Это хорошо для командной работы. 
-(помогает избежать конфликтов).
+- Создание новых объектов происходит в ObjectFactory. Сцена практически пустая. Это хорошо для командной работы(помогает избежать конфликтов).
 
 - Я использую `GameObject.FindGameObjectWithTag(...).GetComponent<...>()` 
-вместо `GameObject.FindObjectOfType<...>()` Методы поиска по тегу работают гораздо быстрее. Также рекомендую избегать использования  `GetComponentsInChildren`.
-Also, I recommend to avoid using `GetComponentsInChildren`. `FindObjectOfType` and `GetComponentsInChildren` 
-go through the full hierarchy and call `GetComponent` on every game object
-  (This is very slow.).
+вместо `GameObject.FindObjectOfType<...>()` Методы поиска по тегу работают гораздо быстрее. Также рекомендую избегать использования `GetComponentsInChildren`.
+`FindObjectOfType` и `GetComponentInChildren` идут по всей иерархии объектов и вызывают метод `GetComponent` на каждом (это очень медленно).
 
-- It makes sense to call the methods-locators(`Find*`,`GetComponent*`)
-as rare as possible. Ideally, only once in the `Awake` or `Start`. 
-If you place such calls in the `Update`, it will kill the performance of your game.
+- Имеет смысл вызывать методы-локаторы(`Find*`,`GetComponent*`)
+как можно реже. Лучше всего один раз в `Awake` или `Start`. 
+Если вы будете дергать эти методы в `Update`, то это убъет производительность вашей игры.
 
-- Pay attention to the order of the game objects creation
-and their initialization (1 -> 2 -> 3).
-Because of this initialization order, locating and binding is
-in the `Start` methods (the next frame after the instantiation).
-And that is why `ObjectFactory` is the last in 
-the creation list. It must be initialized last (it needs the other objects for that).
+- Обратите внимание на порядок создания объектов и порядок их инициализации (1 -> 2 -> 3).
+Из-за порядка инициализации, поиск и связывание находятся в `Start` методах (следующий кадр после создания). 
+Также, по этой причине `Game` последний в списке на создание (нужны другие объекты для инициализации).
 
+По этим причинам, код становится немного сложнее, приходится думать о порядке создания и инициализации объектов. 
+Но с другой стороны, этот подход позволяет эфективно разбить вашу сцену на несвязанные (или слабосвязанные) префабы и удобно работать в команде (параллельно).
+Ваш проект будет более стабилен, чем при прямом связывании, число случайных поломок значительно уменьшится.
 
-These points make the code a bit more complex, 
-and make you think about the initialization order.
-But it allows you to split your scene into independent
-prefabs and work comfortably on the project in a parallel manner.
-You artifacts will be more stable with this approach 
-than with the direct binding.
+## Dependency Injection (внедрение завиимостей)
 
-## Dependency Injection
+Когда ваш проект продолжает расти, становится все сложнее отслеживать порядок инициализации.
+Становится типична ситуация, когда метод-локатор пытается найти объект, который еще не создан.
 
-When your project is becoming bigger,
-it makes harder to track the initialization order.
-
-For example, you call a method-locator, 
-but the target object is not instantiated yet.
-
-Of course, you can write a coroutine like that:
-
+Конечно, можно попробовать написать корутины инициализации типа:
 ```C#
 private IEnumerator Start() {
   while(starship == null) {
@@ -152,17 +138,12 @@ private IEnumerator Start() {
   }
 }
 ```
+И это даже будет работать, но код выглядит очень грязным. Он порождает баги и его тяжелее поддерживать.
 
-It will work, but your code will 
-become dirty after some time and it will be
-hard to modify and fix bugs.
-
-The good solution, in this case, is to use the `Dependency Injection`. 
-When you write a class you just declare, 
-that it needs some other objects and, in runtime,
-the external system will provide these objects 
-and notify about it. 
-It is hard to understand abstractly, so let's see the next code snippet:
+Хорошим решением будет в данном случае использовать "Dependency Injection" (внедрение зависимостей).
+Когда вы пишете свои классы, вы можете просто декларировать, что вам нужны какие-то объекты (зависимости),
+а во время исполнения внешняя система проставит эти объект и известит об этом. 
+Тяжело это описать абстрактно, лучше смотреть на практике как это работает:
 
 ```c#
   public class GameManager: SceneContextMonoBehaviour {
@@ -183,11 +164,12 @@ It is hard to understand abstractly, so let's see the next code snippet:
   }
 ```
 
-*The full example you can find here `Assets/context` [>git repo<](https://github.com/dgolovin-dev/article-unity3d-di).*
+*Исходный код доступен в папке `Assets/context` в  [>репозитории<](https://github.com/dgolovin-dev/article-unity3d-di).*
 
-I declare dependencies using the attribute `[Inject]`
+Я объявляюб зависимости с помощью атрибута `[Inject]` 
+I declare dependencies using the attribute `[Inject]`. `[SerializeField][NotEditable]` опциональны, они помогают отслеживать зависимости в Инспекторе во время исполнения.
 (`[SerializeField][NotEditable]` are optional, they helps to track dependencies in the Inspector).
-The *context* reads these attributes in the runtime and binds objects.
+*Контекст* (иногда его называют контейнер) считывает эти атрибуты во время исполнения и проставляет корректные ссылки на объекты в эти поля.
 
 When the *context* resolves all the dependencies, 
 it calls the callback with the attribute `[AfterInject]`.
